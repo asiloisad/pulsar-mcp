@@ -45,6 +45,8 @@ To install `pulsar-mcp` search for [pulsar-mcp](https://web.pulsar-edit.dev/pack
 | `GetProjectPaths` | Get project root folders |
 | `AddProjectPath` | Add a folder to project roots |
 
+> **Note:** Editor tools (`ReadText`, `WriteText`, `GetSelections`, `SetSelections`) operate on the active editor only. For reading/writing other files, use the agent's built-in file tools.
+
 ### Tool Details
 
 **GetActiveEditor** - Returns metadata only (use ReadText for content, GetSelections for cursors):
@@ -77,14 +79,13 @@ The standalone MCP server (`lib/server.js`) can be used with any MCP-compatible 
   "mcpServers": {
     "pulsar": {
       "command": "node",
-      "args": ["/path/to/pulsar-mcp/lib/server.js"],
-      "env": {
-        "PULSAR_BRIDGE_PORT": "3000"
-      }
+      "args": ["~/.pulsar/packages/pulsar-mcp/lib/server.js"]
     }
   }
 }
 ```
+
+On Windows, use `%USERPROFILE%\.pulsar\packages\pulsar-mcp\lib\server.js`.
 
 ## Extending with Custom Tools
 
