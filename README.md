@@ -1,14 +1,14 @@
 # pulsar-mcp
 
-MCP (Model Context Protocol) server for Pulsar editor - provides editor tools to Claude and other AI assistants.
+MCP (Model Context Protocol) server. Provides editor tools to Claude and other AI assistants via the MCP protocol.
 
 ## Features
 
-- MCP protocol version 2025-11-25 with tool annotations support
-- HTTP bridge server running inside Pulsar for direct editor API access
-- Standalone MCP server script for Claude CLI integration
-- Built-in editor tools (get/set editor content, open/save files, manage selections)
-- Extensible: other packages can register additional tools via the `mcp-tools` service
+- **MCP protocol**: Version 2025-11-25 with tool annotations support.
+- **HTTP bridge**: Server running inside Pulsar for direct API access.
+- **Standalone server**: MCP server script for Claude CLI integration.
+- **Editor tools**: Get/set content, open/save files, manage selections.
+- **Extensible**: Other packages can register tools via `mcp-tools` service.
 
 ## Installation
 
@@ -16,16 +16,16 @@ To install `pulsar-mcp` search for [pulsar-mcp](https://web.pulsar-edit.dev/pack
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `Pulsar MCP: Start` | Start the MCP bridge server |
-| `Pulsar MCP: Stop` | Stop the MCP bridge server |
-| `Pulsar MCP: Status` | Show current bridge status and port |
+Commands available in `atom-workspace`:
+
+- `pulsar-mcp:start`: start the MCP bridge server,
+- `pulsar-mcp:stop`: stop the MCP bridge server,
+- `pulsar-mcp:status`: show current bridge status and port.
 
 ## Configuration
 
 | Setting | Description | Default |
-|---------|-------------|---------|
+| --- | --- | --- |
 | Auto Start | Automatically start bridge when Pulsar opens | `true` |
 | Bridge Base Port | Base port for MCP bridge (auto-increments for multiple windows) | `3000` |
 | Debug Mode | Enable debug logging to console | `false` |
@@ -33,42 +33,17 @@ To install `pulsar-mcp` search for [pulsar-mcp](https://web.pulsar-edit.dev/pack
 ## Built-in Tools
 
 | Tool | Description |
-|------|-------------|
+| --- | --- |
 | `GetActiveEditor` | Get editor metadata (path, grammar, modified, lineCount) |
-| `ReadText` | Read buffer content with line pagination support |
-| `WriteText` | Write text at cursor or replace range |
+| `ReadText` | Read active editor content with line pagination (use agent's file tools for other files) |
+| `WriteText` | Write text at cursor or replace range in active editor (use agent's file tools for other files) |
 | `OpenFile` | Open a file in editor with optional position |
 | `SaveFile` | Save a file (active editor or specific path) |
-| `GetSelections` | Get all selections/cursors with positions and text |
-| `SetSelections` | Set multiple selections/cursors at specific positions |
+| `GetSelections` | Get all selections/cursors with positions and text from active editor |
+| `SetSelections` | Set multiple selections/cursors at specific positions in active editor |
 | `CloseFile` | Close an editor tab |
 | `GetProjectPaths` | Get project root folders |
 | `AddProjectPath` | Add a folder to project roots |
-
-> **Note:** Editor tools (`ReadText`, `WriteText`, `GetSelections`, `SetSelections`) operate on the active editor only. For reading/writing other files, use the agent's built-in file tools.
-
-### Tool Details
-
-**GetActiveEditor** - Returns metadata only (use ReadText for content, GetSelections for cursors):
-```json
-{ "path": "/file.js", "grammar": "JavaScript", "modified": false, "lineCount": 100 }
-```
-
-**ReadText** - Read buffer content with pagination for large files:
-```javascript
-ReadText()                                    // Full content (small files only)
-ReadText({limit: 100})                        // First 100 lines
-ReadText({offset: 100, limit: 100})           // Lines 100-199
-ReadText({start: {row: 0, column: 0}, end: {row: 50, column: 0}})  // Position range
-// Returns: { content, path, totalLines, hasMore, range }
-```
-
-**WriteText** - Insert or replace text:
-```javascript
-WriteText({text: "hello"})                    // At cursor/selection
-WriteText({text: "new", start: {row: 5, column: 0}})  // Insert at position
-WriteText({text: "new", start: {...}, end: {...}})    // Replace range
-```
 
 ## MCP Client Integration
 
@@ -87,12 +62,13 @@ The standalone MCP server (`lib/server.js`) can be used with any MCP-compatible 
 
 On Windows, use `%USERPROFILE%\.pulsar\packages\pulsar-mcp\lib\server.js`.
 
-## Extending with Custom Tools
+## Extending with custom tools
 
-Other Pulsar packages can provide additional MCP tools by implementing the `mcp-tools` service:
+Other Pulsar packages can provide additional MCP tools by implementing the `mcp-tools` service.
 
-```javascript
-// In your package.json
+In your `package.json`:
+
+```json
 {
   "providedServices": {
     "mcp-tools": {
@@ -102,42 +78,47 @@ Other Pulsar packages can provide additional MCP tools by implementing the `mcp-
     }
   }
 }
+```
 
-// In your main.js
-provideMcpTools() {
-  return [
-    {
-      name: "MyCustomTool",
-      description: "Description for the AI",
-      inputSchema: {
-        type: "object",
-        properties: {
-          param: { type: "string", description: "Parameter description" }
+In your main module:
+
+```javascript
+module.exports = {
+  provideMcpTools() {
+    return [
+      {
+        name: "MyCustomTool",
+        description: "Description for the AI",
+        inputSchema: {
+          type: "object",
+          properties: {
+            param: { type: "string", description: "Parameter description" }
+          },
+          required: ["param"]
         },
-        required: ["param"]
-      },
-      annotations: { readOnlyHint: true },
-      execute({ param }) {
-        // Tool implementation
-        return { result: "data" };
+        annotations: { readOnlyHint: true },
+        execute({ param }) {
+          // Tool implementation
+          return { result: "data" };
+        }
       }
-    }
-  ];
+    ];
+  }
 }
 ```
 
-### Tool Annotations
+### Tool annotations
 
 MCP 2025-11-25 supports tool annotations to hint behavior:
 
 | Annotation | Description |
-|------------|-------------|
+| --- | --- |
 | `readOnlyHint` | `true` if tool only reads data, `false` if it modifies state |
 | `destructiveHint` | `true` if tool performs destructive actions (e.g., closing files) |
 
-## Service API
+## Service
 
-The `pulsar-mcp` service provides:
+The package provides a `pulsar-mcp` service for other packages.
 
 ```javascript
 // Get the service
@@ -153,6 +134,6 @@ consumePulsarMcp(service) {
 }
 ```
 
-# Contributing
+## Contributing
 
 Got ideas to make this package better, found a bug, or want to help add new features? Just drop your thoughts [on GitHub](https://github.com/asiloisad/pulsar-pulsar-mcp) — any feedback's welcome!
