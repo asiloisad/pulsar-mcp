@@ -1,0 +1,15 @@
+'menu': [
+  {
+    label: 'Packages'
+    submenu: [
+      {
+        label: 'Pulsar MCP'
+        submenu: [
+          { label: 'Start', command: 'pulsar-mcp:start' }
+          { label: 'Stop', command: 'pulsar-mcp:stop' }
+          { label: 'Status', command: 'pulsar-mcp:status' }
+        ]
+      }
+    ]
+  }
+]
