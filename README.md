@@ -62,9 +62,42 @@ The standalone MCP server (`lib/server.js`) can be used with any MCP-compatible 
 
 On Windows, use `%USERPROFILE%\.pulsar\packages\pulsar-mcp\lib\server.js`.
 
-## Extending with custom tools
+## Provided Service `pulsar-mcp`
 
-Other Pulsar packages can provide additional MCP tools by implementing the `mcp-tools` service.
+Provides access to the MCP bridge state — port, running status, and server script path. Used by [claude-chat](https://web.pulsar-edit.dev/packages/claude-chat) to auto-connect the MCP server.
+
+In your `package.json`:
+
+```json
+{
+  "consumedServices": {
+    "pulsar-mcp": {
+      "versions": {
+        "1.0.0": "consumePulsarMcp"
+      }
+    }
+  }
+}
+```
+
+In your main module:
+
+```javascript
+consumePulsarMcp(service) {
+  // Get current bridge port
+  const port = service.getBridgePort();
+
+  // Check if bridge is running
+  const running = service.isRunning();
+
+  // Get path to MCP server script
+  const serverPath = service.getServerPath();
+}
+```
+
+## Consumed Service `mcp-tools`
+
+Other Pulsar packages can provide additional MCP tools by implementing the `mcp-tools` service. Each tool defines a name, description, input schema, and execute function.
 
 In your `package.json`:
 
@@ -115,24 +148,6 @@ MCP 2025-11-25 supports tool annotations to hint behavior:
 | --- | --- |
 | `readOnlyHint` | `true` if tool only reads data, `false` if it modifies state |
 | `destructiveHint` | `true` if tool performs destructive actions (e.g., closing files) |
-
-## Service
-
-The package provides a `pulsar-mcp` service for other packages.
-
-```javascript
-// Get the service
-consumePulsarMcp(service) {
-  // Get current bridge port
-  const port = service.getBridgePort();
-
-  // Check if bridge is running
-  const running = service.isRunning();
-
-  // Get path to MCP server script
-  const serverPath = service.getServerPath();
-}
-```
 
 ## Contributing
 
