@@ -47,14 +47,17 @@ Commands available in `atom-workspace`:
 
 ## MCP Client Integration
 
-The standalone MCP server (`lib/server.js`) can be used with any MCP-compatible client.
+The standalone MCP server (`lib/server.js`) can be used with any MCP-compatible client. The server connects to the Pulsar bridge via `PULSAR_BRIDGE_PORT` (default `3000`). Check the actual port with `pulsar-mcp:status` — it auto-increments when multiple Pulsar windows are open.
 
 ```json
 {
   "mcpServers": {
     "pulsar": {
       "command": "node",
-      "args": ["~/.pulsar/packages/pulsar-mcp/lib/server.js"]
+      "args": ["~/.pulsar/packages/pulsar-mcp/lib/server.js"],
+      "env": {
+        "PULSAR_BRIDGE_PORT": "3000"
+      }
     }
   }
 }
