@@ -32,18 +32,18 @@ Commands available in `atom-workspace`:
 
 ## Built-in Tools
 
-| Tool | Description |
-| --- | --- |
-| `GetActiveEditor` | Get editor metadata (path, grammar, modified, lineCount) |
-| `ReadText` | Read active editor content with line pagination (use agent's file tools for other files) |
-| `WriteText` | Write text at cursor or replace range in active editor (use agent's file tools for other files) |
-| `OpenFile` | Open a file in editor with optional position |
-| `SaveFile` | Save a file (active editor or specific path) |
-| `GetSelections` | Get all selections/cursors with positions and text from active editor |
-| `SetSelections` | Set multiple selections/cursors at specific positions in active editor |
-| `CloseFile` | Close an editor tab |
-| `GetProjectPaths` | Get project root folders |
-| `AddProjectPath` | Add a folder to project roots |
+| Tool | Description | Default |
+| --- | --- | --- |
+| `GetActiveEditor` | Get editor metadata (path, grammar, modified, lineCount) | Enabled |
+| `ReadText` | Read active editor content with line pagination (use agent's file tools for other files) | Enabled |
+| `WriteText` | Write text at cursor or replace range in active editor (use agent's file tools for other files) | Enabled |
+| `OpenFile` | Open a file in editor with optional position | Enabled |
+| `SaveFile` | Save a file (active editor or specific path) | Enabled |
+| `GetSelections` | Get all selections/cursors with positions and text from active editor | Enabled |
+| `SetSelections` | Set multiple selections/cursors at specific positions in active editor | Enabled |
+| `CloseFile` | Close an editor tab | Enabled |
+| `GetProjectPaths` | Get project root folders | Enabled |
+| `AddProjectPath` | Add a folder to project roots | Enabled |
 
 ## MCP Client Integration
 

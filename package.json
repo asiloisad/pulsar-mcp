@@ -48,6 +48,16 @@
       "maximum": 65535,
       "order": 1
     },
+    "disabledTools": {
+      "title": "Disabled Tools",
+      "description": "List of disabled MCP tool names (managed via toggle-tools command)",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "order": 98
+    },
     "debugMode": {
       "title": "Debug Mode",
       "description": "Enable debug logging to console for troubleshooting",
@@ -55,5 +65,8 @@
       "default": false,
       "order": 99
     }
+  },
+  "dependencies": {
+    "pulsar-select-list": "^1.4.1"
   }
 }
