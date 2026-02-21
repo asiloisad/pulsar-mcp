@@ -1,6 +1,6 @@
 # pulsar-mcp
 
-MCP (Model Context Protocol) server. Provides editor tools to Claude and other AI assistants via the MCP protocol.
+MCP (Model Context Protocol) server. Provides editor tools to AI assistants via the MCP protocol.
 
 ## Features
 
@@ -9,6 +9,7 @@ MCP (Model Context Protocol) server. Provides editor tools to Claude and other A
 - **Standalone server**: MCP server script for Claude CLI integration.
 - **Editor tools**: Get/set content, open/save files, manage selections.
 - **Extensible**: Other packages can register tools via `mcp-tools` service.
+- **Toggle tools**: Enable/disable individual tools via select list. Destructive tools disabled by default.
 
 ## Installation
 
@@ -18,17 +19,16 @@ To install `pulsar-mcp` search for [pulsar-mcp](https://web.pulsar-edit.dev/pack
 
 Commands available in `atom-workspace`:
 
+- `pulsar-mcp:toggle-tools`: toggle individual tools on/off,
 - `pulsar-mcp:start`: start the MCP bridge server,
 - `pulsar-mcp:stop`: stop the MCP bridge server,
 - `pulsar-mcp:status`: show current bridge status and port.
 
-## Configuration
+Commands available in `.pulsar-mcp`:
 
-| Setting | Description | Default |
-| --- | --- | --- |
-| Auto Start | Automatically start bridge when Pulsar opens | `true` |
-| Bridge Base Port | Base port for MCP bridge (auto-increments for multiple windows) | `3000` |
-| Debug Mode | Enable debug logging to console | `false` |
+- `select-list:enable-all`: (`Alt+=`) enable all tools,
+- `select-list:disable-all`: (`Alt+-`) disable all tools,
+- `select-list:reset-defaults`: (`Alt+0`) reset to defaults.
 
 ## Built-in Tools
 
@@ -143,15 +143,6 @@ module.exports = {
   }
 }
 ```
-
-### Tool annotations
-
-MCP 2025-11-25 supports tool annotations to hint behavior:
-
-| Annotation | Description |
-| --- | --- |
-| `readOnlyHint` | `true` if tool only reads data, `false` if it modifies state |
-| `destructiveHint` | `true` if tool performs destructive actions (e.g., closing files) |
 
 ## Contributing
 
