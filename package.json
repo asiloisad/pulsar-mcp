@@ -1,7 +1,7 @@
 {
   "name": "pulsar-mcp",
   "main": "./lib/main",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "MCP (Model Context Protocol) server",
   "keywords": [
     "mcp",
@@ -52,7 +52,10 @@
       "title": "Disabled Tools",
       "description": "List of disabled MCP tool names (managed via toggle-tools command)",
       "type": "array",
-      "default": ["CloseFile", "RemoveProjectPath"],
+      "default": [
+        "CloseFile",
+        "RemoveProjectPath"
+      ],
       "items": {
         "type": "string"
       },
