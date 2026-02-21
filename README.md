@@ -41,9 +41,10 @@ Commands available in `atom-workspace`:
 | `SaveFile` | Save a file (active editor or specific path) | Enabled |
 | `GetSelections` | Get all selections/cursors with positions and text from active editor | Enabled |
 | `SetSelections` | Set multiple selections/cursors at specific positions in active editor | Enabled |
-| `CloseFile` | Close an editor tab | Enabled |
+| `CloseFile` | Close an editor tab | Disabled |
 | `GetProjectPaths` | Get project root folders | Enabled |
 | `AddProjectPath` | Add a folder to project roots | Enabled |
+| `RemoveProjectPath` | Remove a folder from project roots | Disabled |
 
 ## MCP Client Integration
 

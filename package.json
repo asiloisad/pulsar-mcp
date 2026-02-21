@@ -52,7 +52,7 @@
       "title": "Disabled Tools",
       "description": "List of disabled MCP tool names (managed via toggle-tools command)",
       "type": "array",
-      "default": [],
+      "default": ["CloseFile", "RemoveProjectPath"],
       "items": {
         "type": "string"
       },
